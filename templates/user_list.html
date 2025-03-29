@@ -8,7 +8,7 @@
     
     <div class="list-group shadow-lg rounded-3">
         {% for object in object_list %}
-            <a href="{{ object.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start py-4 mb-4 border-0 rounded-3 hover-shadow-lg">
+            <a href="{% url 'messaging:message_list' object.id %}" class="list-group-item list-group-item-action flex-column align-items-start py-4 mb-4 border-0 rounded-3 hover-shadow-lg">
                 <div class="d-flex align-items-center">
                     <!-- Profile Picture -->
                     <div class="profile-pic me-4">
