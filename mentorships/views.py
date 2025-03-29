@@ -42,3 +42,5 @@ class MentorDashboardView(LoginRequiredMixin, View):
 class MentorConfigView(TemplateView):
     template_name = "mentorship/mentor_config.html"
 
+class ProfileEditView(TemplateView):
+    template_name= "profile_edit.html"

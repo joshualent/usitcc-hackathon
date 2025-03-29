@@ -4,6 +4,7 @@ from .views import (
     MenteeDashboardView,
     MentorDashboardView,
     MentorConfigView,
+    ProfileEditView,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path('mentee-dashboard/', MenteeDashboardView.as_view(), name='mentee_dashboard'),
     path('mentor-dashboard/', MentorDashboardView.as_view(), name='mentor_dashboard'),
     path('mentor_config/', MentorConfigView.as_view(), name='mentor_config'),
+    path('profile_edit/', ProfileEditView.as_view(),name='profile_edit'),
 ]

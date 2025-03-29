@@ -1,0 +1,179 @@
+{% extends "home.html" %}
+
+{% block more_content %}
+<br>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Edit Profile Card -->
+            <div class="card shadow-sm border-0 rounded-lg">
+                <!-- Orange Gradient Header -->
+                <div class="card-header py-4 text-center" style="background: linear-gradient(135deg, #FF6B35, #FF8E3D);">
+                    <h2 class="h4 mb-0 text-white">
+                        <i class="fas fa-user-edit me-2"></i>Edit Profile
+                    </h2>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Profile Picture Upload -->
+                        <div class="text-center mb-4">
+                            <div class="profile-pic-upload mx-auto mb-3">
+                                {% if profile and profile.picture %}
+                                    <img id="profile-preview" src="{{ profile.picture.url }}" 
+                                         class="img-fluid rounded-circle shadow" 
+                                         style="width: 120px; height: 120px; object-fit: cover;">
+                                {% else %}
+                                    <div id="profile-preview" 
+                                         class="d-flex align-items-center justify-content-center bg-light rounded-circle shadow" 
+                                         style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-secondary"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <label for="id_picture" class="btn btn-sm btn-outline-orange rounded-pill">
+                                    <i class="fas fa-camera me-1"></i> Change Photo
+                                    <input type="file" name="picture" id="id_picture" accept="image/*" class="d-none">
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Fields -->
+                        <div class="mb-3">
+                            <label for="id_location" class="form-label small text-muted">Location</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-orange text-white">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                                <input type="text" name="location" id="id_location" 
+                                       class="form-control" 
+                                       value="{% if profile %}{{ profile.location }}{% endif %}"
+                                       placeholder="Enter your location">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Skills</label>
+                            <div class="border rounded p-3" style="min-height: 100px;">
+                                {% for skill in all_skills %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" 
+                                           name="skills" id="skill-{{ skill.id }}" 
+                                           value="{{ skill.id }}"
+                                           {% if skill in profile.skills.all %}checked{% endif %}>
+                                    <label class="form-check-label" for="skill-{{ skill.id }}">
+                                        {{ skill.name }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_bio" class="form-label small text-muted">Bio</label>
+                            <textarea name="bio" id="id_bio" class="form-control" rows="4"
+                                      placeholder="Tell us about yourself...">{% if profile %}{{ profile.bio }}{% endif %}</textarea>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between border-top pt-3">
+                            <a href="{% url 'mentor_config' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-orange rounded-pill px-4">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Orange Theme */
+    .bg-orange {
+        background-color: #FF6B35 !important;
+    }
+    
+    .btn-orange {
+        background-color: #FF6B35;
+        border-color: #FF6B35;
+        color: white;
+    }
+    
+    .btn-orange:hover {
+        background-color: #E05A2B;
+        border-color: #E05A2B;
+        color: white;
+    }
+    
+    .btn-outline-orange {
+        color: #FF6B35;
+        border-color: #FF6B35;
+    }
+    
+    .btn-outline-orange:hover {
+        color: white;
+        background-color: #FF6B35;
+    }
+    
+    /* Form Styling */
+    .form-control:focus, .form-check-input:focus {
+        border-color: #FFA630;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+    }
+    
+    .form-check-input:checked {
+        background-color: #FF6B35;
+        border-color: #FF6B35;
+    }
+    
+    /* Profile Picture Upload */
+    #id_picture:hover + label, #id_picture:focus + label {
+        background-color: #FF6B35;
+        color: white;
+    }
+    
+    /* Card Styling */
+    .card {
+        border: none;
+    }
+    
+    .rounded-lg {
+        border-radius: 12px !important;
+    }
+</style>
+
+<script>
+    // Profile picture preview
+    document.getElementById('id_picture').addEventListener('change', function(e) {
+        const preview = document.getElementById('profile-preview');
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            if (preview.tagName === 'IMG') {
+                preview.src = e.target.result;
+            } else {
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'img-fluid rounded-circle shadow';
+                img.style.width = '120px';
+                img.style.height = '120px';
+                img.style.objectFit = 'cover';
+                preview.appendChild(img);
+            }
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}

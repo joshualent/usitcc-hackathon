@@ -10,9 +10,15 @@
                 <a class="navbar-brand fw-bold text-warning fs-3" href="#">JEDA</a>
                 <div class="ms-auto d-flex align-items-center">
                     <span class="me-3 text-light fw-semibold">Welcome, {{ user.username }}! 🎉</span>
-                    <a href="{% url 'mentor_config' %}" class="btn btn-primary">
+                    <a href="{% url 'mentor_config' %}" class=" btn-spacing btn btn-primary">
                         Profile
-                    </a>                        
+                    </a>      
+                    
+                    <style>
+                        .btn-spacing{
+                            margin-right:1rem;
+                        }
+                    </style>
 
                     <form id='logout-form' method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
