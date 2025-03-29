@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 
-{% block content %}
-<h2>Conversations</h2>
+{% block more_content %}
+<h2 class="mt-5">Conversations</h2>
 <a href="{% url 'messaging:add_message' %}" class="btn btn-primary mb-3">New Message</a>
 
 <h3>Start a conversation</h3>
@@ -29,4 +29,4 @@
     <p>No messages yet.</p>
     {% endfor %}
 </div>
-{% endblock content %}
+{% endblock more_content %}

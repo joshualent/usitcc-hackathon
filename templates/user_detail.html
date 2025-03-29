@@ -3,6 +3,6 @@
 {% block more_content %}
 <h1 class="mt-5">{{ object.username }}</h1>
 <p>{{ object.city }}, {{ object.state }}</p>
-<p><a href="{% url 'messaging:conversation' %}">Message</a></p>
+<p><a href="{% url 'messaging:conversation' %}" class="btn btn-large btn-primary">Message</a></p>
 <p>Email: {{object }}</p>
 {% endblock more_content %}
