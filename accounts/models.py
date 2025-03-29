@@ -1,29 +1,25 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.urls import reverse
-
+from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
-    """Custom user model that extends the default Django user model."""
-
     age = models.PositiveIntegerField(null=True, blank=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    is_mentor = models.BooleanField(
-        default=False
-    )  # True if the user is a mentor, False if not
-    is_mentee = models.BooleanField(
-        default=True
-    )  # True if the user is a mentee, False if not
-    skills = models.ManyToManyField(
-        "Skill", blank=True, related_name="users"
-    )  # Many-to-many relationship with the Skill model
+    is_mentor = models.BooleanField(default=False)  # True if the user is a mentor
+    is_mentee = models.BooleanField(default=True)  # True if the user is a mentee
+    skills = models.ManyToManyField('Skill', blank=True, related_name="users")
 
     def __str__(self):
         return self.email
 
-    def get_absolute_url(self):
-        return reverse("user_detail", kwargs={"pk": self.pk})
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    bio = models.TextField(blank=True, null=True)
+    picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
 
 
 class Skill(models.Model):

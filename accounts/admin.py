@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
-
+from .models import CustomUser, Profile
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
@@ -53,3 +52,12 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+    def save_model(self, request, obj, form, change):
+        # Call the parent save method
+        super().save_model(request, obj, form, change)
+
+        # Ensure that the user has a profile after being saved
+        if not hasattr(obj, 'profile'):  # Check if the profile already exists
+            Profile.objects.create(user=obj)
+
