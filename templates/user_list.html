@@ -4,10 +4,46 @@
 
 {% block more_content %}
 <div class="container mt-5">
-    <ul>
-    {% for object in object_list %}
-    <li style="list-style: none;"><p class="h5"><a href="{{ object.get_absolute_url }}" style="color: black;">{{ object.username }}</a></p></li>
-    {% endfor %}
-</ul>
+    <h2 class="text-center mb-4 text-primary">Explore Our Users</h2>
+    
+    <div class="list-group shadow-lg rounded-3">
+        {% for object in object_list %}
+            <a href="{{ object.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start py-4 mb-4 border-0 rounded-3 hover-shadow-lg">
+                <div class="d-flex align-items-center">
+                    <!-- Profile Picture -->
+                    <div class="profile-pic me-4">
+                        {% if object.profile.picture %}
+                            <img src="{{ object.profile.picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% else %}
+                            <!-- Bootstrap Icon for User -->
+                            <i class="bi bi-person-circle fs-3 text-muted"></i>
+                        {% endif %}
+                    </div>
+
+                    <!-- User Details -->
+                    <div>
+                        <h5 class="mb-2 text-dark">{{ object.username }}</h5>
+                        <p class="mb-1 text-muted"><strong>Email:</strong> {{ object.email }}</p>
+                        <p class="mb-2 text-muted"><strong>Location:</strong> {{ object.profile.location|default:"Not provided" }}</p>
+                        <p class="mb-1">
+                            <strong>Skills:</strong>
+                            {% if object.profile.skills.all %}
+                                <ul class="list-inline mb-0">
+                                    {% for skill in object.profile.skills.all %}
+                                        <li class="list-inline-item badge bg-primary text-white">{{ skill.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="badge bg-secondary">No skills listed</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </a>
+            <!-- Gold Horizontal Rule -->
+            <hr style="border: 1px solid gold; margin-top: 20px; margin-bottom: 20px;">
+        {% endfor %}
+    </div>
 </div>
+
 {% endblock more_content %}
