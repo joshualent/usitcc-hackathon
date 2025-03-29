@@ -1,0 +1,32 @@
+{% extends "home.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <h2>Conversation with {{ other_user.username }}</h2>
+  <a href="{% url 'messaging:conversation' %}" class="btn btn-secondary">Back to All Messages</a>
+</div>
+
+<div class="message-container mb-4">
+  {% for message in messages %}
+    <div class="message mb-3 {% if message.sender == request.user %}text-right{% endif %}">
+      <div class="card {% if message.sender == request.user %}bg-primary text-white ml-5{% else %}bg-light mr-5{% endif %}">
+        <div class="card-body">
+          <p class="mb-1">{{ message.body }}</p>
+          <small>{{ message.timestamp|date:"M d, Y H:i" }}</small>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-center">No messages yet. Start the conversation!</p>
+  {% endfor %}
+</div>
+
+<form method="post" action="{% url 'messaging:add_message' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <input type="hidden" name="receiver" value="{{ other_user.id }}">
+    <textarea name="body" class="form-control" rows="3" placeholder="Type your message..." required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+{% endblock content %}

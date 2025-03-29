@@ -1,0 +1,15 @@
+{% extends "home.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>New Message</h2>
+    <a href="{% url 'messaging:conversation' %}" class="btn btn-secondary">Back to Messages</a>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+{% endblock content %}
