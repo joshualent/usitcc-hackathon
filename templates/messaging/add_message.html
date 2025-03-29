@@ -1,15 +1,113 @@
 {% extends "home.html" %}
-{% load crispy_forms_tags %}
 
-{% block content %}
-<div class="d-flex justify-content-between mb-3">
-    <h2>New Message</h2>
-    <a href="{% url 'messaging:conversation' %}" class="btn btn-secondary">Back to Messages</a>
+{% block more_content %}
+<br>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <!-- Orange header with centered title -->
+                <div class="card-header py-3 text-center" style="background: linear-gradient(135deg, #FF6B35, #FF8E3D);">
+                    <h2 class="h5 mb-0 text-white"><i class="bi bi-chat-text me-2"></i>Add a Message</h2>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Modern form fields -->
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label small text-muted mb-1">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                            </label>
+                            
+                            {{ field }}
+                            
+                            {% if field.help_text %}
+                            <small class="form-text text-muted mt-1">{{ field.help_text }}</small>
+                            {% endif %}
+                
+                            {% for error in field.errors %}
+                            <div class="invalid-feedback d-block small">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Button group with improved hover effects -->
+                        <div class="d-flex justify-content-between mt-4 pt-2 border-top">
+                            <a href="{% url 'messaging:conversation' %}" class="btn btn-outline-orange rounded-pill px-4">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Messages
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4" 
+                                    style="background-color: #FF6B35; border-color: #FF6B35;">
+                                <i class="bi bi-send me-1"></i> Post Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Send Message</button>
-</form>
-{% endblock content %}
+<style>
+    /* Modern enhancements */
+    .card {
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 107, 53, 0.1) !important;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .form-control:focus {
+        border-color: #FFA630;
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+    }
+    
+    textarea.form-control {
+        min-height: 140px;
+    }
+    
+    /* Custom orange outline button */
+    .btn-outline-orange {
+        color: #FF6B35;
+        border-color: #FF6B35;
+        background-color: transparent;
+    }
+    
+    .btn-outline-orange:hover {
+        color: #fff;
+        background-color: #FF6B35;
+        border-color: #FF6B35;
+    }
+    
+    .btn {
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: #E05A2B !important;
+        border-color: #E05A2B !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(224, 90, 43, 0.3);
+    }
+    
+    .rounded-pill {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+</style>
+{% endblock more_content %}
