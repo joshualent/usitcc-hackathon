@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,8 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-2yl&yu4*t7bgslw=+-vtxskm5kc=_ubhr!t9m0=yp_-+iu=ew4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = []
 
 
@@ -142,3 +142,10 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Crispy Forms Settings
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Use Whitenoise to serve static files
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
