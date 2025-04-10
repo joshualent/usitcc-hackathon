@@ -33,3 +33,5 @@ python3 manage.py migrate
 python3 manage.py runserver
 ```
 6. Click on the link shown in terminal which will take you to the app! Look around the different URLs
+
+Deployed app url: https://usitcc-hackathon-08637577cb26.herokuapp.com/
